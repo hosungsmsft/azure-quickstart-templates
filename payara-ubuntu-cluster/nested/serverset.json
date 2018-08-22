@@ -42,7 +42,7 @@
             "dependsOn": [
                 "[concat('Microsoft.Compute/availabilitySets/',parameters('payaraCommon').serverSetName)]"
             ],
-            "name": "[concat('payara-vm-template',copyindex())]",
+            "name": "[concat('payara-vm-deployment',copyindex())]",
             "properties": {
                 "mode": "Incremental",
                 "parameters": {

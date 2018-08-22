@@ -134,7 +134,7 @@
                         "managedDisk": {
                             "storageAccountType": "Premium_LRS"
                         },
-                        "name": "[parameters('payaraCommon').ctlrVmName]"
+                        "name": "[concat(parameters('payaraCommon').ctlrVmName, '-osdisk')]"
                     }
                 }
             },
@@ -159,7 +159,7 @@
                     ]
                 },
                 "protectedSettings":{
-                    "commandToExecute": "[concat('bash ', parameters('payaraCommon').setupScriptName, ' controller')]"
+                    "commandToExecute": "[concat('bash ', parameters('payaraCommon').setupScriptName, ' controller ', parameters('payaraCommon').serverNamePrefix, ' ', parameters('payaraCommon').serverCount)]"
                 },
                 "type": "CustomScript",
                 "typeHandlerVersion": "2.0"

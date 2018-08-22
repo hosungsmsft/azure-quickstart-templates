@@ -93,7 +93,7 @@
         {
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2017-05-10",
-            "name": "networkTemplate",
+            "name": "networkDeployment",
             "properties": {
                 "mode": "Incremental",
                 "parameters": {
@@ -110,9 +110,9 @@
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2017-05-10",
             "dependsOn": [
-                "Microsoft.Resources/deployments/networkTemplate"
+                "Microsoft.Resources/deployments/networkDeployment"
             ],
-            "name": "serverSetTemplate",
+            "name": "serverSetDeployment",
             "properties": {
                 "mode": "Incremental",
                 "parameters": {
@@ -120,7 +120,7 @@
                         "value": "[variables('payaraCommon')]"
                     },
                     "subnetId": {
-                        "value": "[reference('networkTemplate').outputs.subnetId.value]"
+                        "value": "[reference('networkDeployment').outputs.subnetId.value]"
                     }
                 },
                 "templateLink": {
@@ -132,10 +132,10 @@
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2017-05-10",
             "dependsOn": [
-                "Microsoft.Resources/deployments/networkTemplate",
-                "Microsoft.Resources/deployments/serverSetTemplate"
+                "Microsoft.Resources/deployments/networkDeployment",
+                "Microsoft.Resources/deployments/serverSetDeployment"
             ],
-            "name": "controllerTemplate",
+            "name": "controllerDeployment",
             "properties": {
                 "mode": "Incremental",
                 "parameters": {
@@ -143,10 +143,10 @@
                         "value": "[variables('payaraCommon')]"
                     },
                     "subnetId": {
-                        "value": "[reference('networkTemplate').outputs.subnetId.value]"
+                        "value": "[reference('networkDeployment').outputs.subnetId.value]"
                     },
                     "ctlrPubIpId": {
-                        "value": "[reference('networkTemplate').outputs.ctlrPubIpId.value]"
+                        "value": "[reference('networkDeployment').outputs.ctlrPubIpId.value]"
                     }
                 },
                 "templateLink": {
@@ -158,11 +158,11 @@
     "outputs": {
         "loadBalancerDNS": {
             "type": "string",
-            "value": "[reference('networkTemplate').outputs.lbDns.value]"
+            "value": "[reference('networkDeployment').outputs.lbDns.value]"
         },
         "controllerDNS": {
             "type": "string",
-            "value": "[reference('networkTemplate').outputs.ctlrDns.value]"
+            "value": "[reference('networkDeployment').outputs.ctlrDns.value]"
         }
     },
     "variables": {
