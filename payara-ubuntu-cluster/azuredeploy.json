@@ -50,17 +50,17 @@
             },
             "type": "string"
         },
-        "vmssVmSku": {
+        "serverSku": {
             "defaultValue": "Standard_F4s_v2",
             "metadata": {
-                "description": "VM size for Payara VMSS VMs"
+                "description": "VM size for each Payara VM in the cluster"
             },
             "type": "string"
         },
-        "vmssVmCount": {
+        "serverCount": {
             "defaultValue": 2,
             "metadata": {
-                "description": "Number of VM instances for Payara server VMs"
+                "description": "Number of Payara server VMs"
             },
             "type": "int"
         },
@@ -112,6 +112,29 @@
             "dependsOn": [
                 "Microsoft.Resources/deployments/networkTemplate"
             ],
+            "name": "serverSetTemplate",
+            "properties": {
+                "mode": "Incremental",
+                "parameters": {
+                    "payaraCommon": {
+                        "value": "[variables('payaraCommon')]"
+                    },
+                    "subnetId": {
+                        "value": "[reference('networkTemplate').outputs.subnetId.value]"
+                    }
+                },
+                "templateLink": {
+                    "uri": "[concat(variables('payaraCommon').baseTemplateUrl, 'serverset.json', parameters('_artifactsLocationSasToken'))]"
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2017-05-10",
+            "dependsOn": [
+                "Microsoft.Resources/deployments/networkTemplate",
+                "Microsoft.Resources/deployments/serverSetTemplate"
+            ],
             "name": "controllerTemplate",
             "properties": {
                 "mode": "Incremental",
@@ -128,28 +151,6 @@
                 },
                 "templateLink": {
                     "uri": "[concat(variables('payaraCommon').baseTemplateUrl, 'controller.json', parameters('_artifactsLocationSasToken'))]"
-                }
-            }
-        },
-        {
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2017-05-10",
-            "dependsOn": [
-                "Microsoft.Resources/deployments/networkTemplate"
-            ],
-            "name": "scaleSetTemplate",
-            "properties": {
-                "mode": "Incremental",
-                "parameters": {
-                    "payaraCommon": {
-                        "value": "[variables('payaraCommon')]"
-                    },
-                    "subnetId": {
-                        "value": "[reference('networkTemplate').outputs.subnetId.value]"
-                    }
-                },
-                "templateLink": {
-                    "uri": "[concat(variables('payaraCommon').baseTemplateUrl, 'vmss.json', parameters('_artifactsLocationSasToken'))]"
                 }
             }
         }
@@ -196,9 +197,10 @@
             "sshPublicKey": "[parameters('sshPublicKey')]",
             "sshUsername": "[parameters('sshUsername')]",
             "subnetPayara": "[concat('payara-subnet-',variables('resourceprefix'))]",
-            "vmssName": "[concat('vmss-',variables('resourceprefix'))]",
-            "vmssVmCount": "[parameters('vmssVmCount')]",
-            "vmssVmSku": "[parameters('vmssVmSku')]",
+            "serverSetName": "[concat('payara-vm-set-',variables('resourceprefix'))]",
+            "serverNamePrefix": "[concat('payara-vm-', variables('resourceprefix'))]",
+            "serverCount": "[parameters('serverCount')]",
+            "serverSku": "[parameters('serverSku')]",
             "vnetName": "[concat('vnet-',variables('resourceprefix'))]"
         },
         "resourceprefix": "[substring(uniqueString(resourceGroup().id, deployment().name), 3, 6)]"
