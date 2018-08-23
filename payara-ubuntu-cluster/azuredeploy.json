@@ -44,9 +44,14 @@
             "type": "string"
         },
         "sshPrivateKey": {
-            "defaultValue": "bogus-ssh-private-key",
             "metadata": {
-                "description": "Base64-encoded ssh private key (corresponding to the sshPublicKey param). This is to allow the Payara admin server (on the controller VM) to log on to each Payara server and configure it. The default value is only to satisfy the quickstart templates repo CI requirement. This should be replaced by a valid SSH private key (base64-encoded). This should be replaced by a KeyVault secret URI in the near future."
+                "description": "Base64-encoded ssh private key (corresponding to the sshPublicKey param). This is to allow the Payara admin server (on the controller VM) to log on to each Payara server and configure it."
+            },
+            "type": "securestring"
+        },
+        "payaraAdminServerPassword": {
+            "metadata": {
+                "description": "Password you want to set for the Payara admin server's default 'admin' account. Do not put any dollar sign in the password, as the shell script may interpret it unexpectedly."
             },
             "type": "securestring"
         },
@@ -178,7 +183,7 @@
                     ]
                 },
                 "protectedSettings":{
-                    "commandToExecute": "[concat('bash ', variables('payaraCommon').setupScriptName, ' controller ', variables('payaraCommon').serverNamePrefix, ' ', variables('payaraCommon').serverCount, ' ', parameters('sshPrivateKey'))]"
+                    "commandToExecute": "[concat('bash ', variables('payaraCommon').setupScriptName, ' controller ', variables('payaraCommon').serverNamePrefix, ' ', variables('payaraCommon').serverCount, ' ', parameters('payaraAdminServerPassword'), ' ', parameters('sshPrivateKey'))]"
                 },
                 "type": "CustomScript",
                 "typeHandlerVersion": "2.0"
