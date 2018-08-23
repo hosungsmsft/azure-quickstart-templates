@@ -30,18 +30,25 @@
             },
             "defaultValue": ""
         },
-        "sshPublicKey": {
-            "metadata": {
-                "description": "ssh public key"
-            },
-            "type": "string"
-        },
         "sshUsername": {
             "defaultValue": "payaraadmin",
             "metadata": {
                 "description": "ssh user name"
             },
             "type": "string"
+        },
+        "sshPublicKey": {
+            "metadata": {
+                "description": "ssh public key"
+            },
+            "type": "string"
+        },
+        "sshPrivateKey": {
+            "defaultValue": "bogus-ssh-private-key",
+            "metadata": {
+                "description": "Base64-encoded ssh private key (corresponding to the sshPublicKey param). This is to allow the Payara admin server (on the controller VM) to log on to each Payara server and configure it. The default value is only to satisfy the quickstart templates repo CI requirement. This should be replaced by a valid SSH private key (base64-encoded). This should be replaced by a KeyVault secret URI in the near future."
+            },
+            "type": "securestring"
         },
         "controllerVmSku": {
             "defaultValue": "Standard_F4s_v2",
@@ -152,6 +159,32 @@
                 "templateLink": {
                     "uri": "[concat(variables('payaraCommon').baseTemplateUrl, 'controller.json', parameters('_artifactsLocationSasToken'))]"
                 }
+            }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "apiVersion": "2017-03-30",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "Microsoft.Resources/deployments/controllerDeployment"
+            ],
+            "name": "[concat(variables('payaraCommon').ctlrVmName,'/setup-payara')]",
+            "properties": {
+                "autoUpgradeMinorVersion": true,
+                "publisher": "Microsoft.Azure.Extensions",
+                "settings": {
+                    "fileUris": [
+                        "[variables('payaraCommon').setupScriptUri]"
+                    ]
+                },
+                "protectedSettings":{
+                    "commandToExecute": "[concat('bash ', variables('payaraCommon').setupScriptName, ' controller ', variables('payaraCommon').serverNamePrefix, ' ', variables('payaraCommon').serverCount, ' ', parameters('sshPrivateKey'))]"
+                },
+                "type": "CustomScript",
+                "typeHandlerVersion": "2.0"
+            },
+            "tags": {
+                "displayName": "setup-payara-controller"
             }
         }
     ],

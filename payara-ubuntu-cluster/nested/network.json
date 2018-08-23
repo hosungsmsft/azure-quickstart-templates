@@ -99,7 +99,7 @@
                             "backendAddressPool": {
                                 "id": "[variables('extBeID')]"
                             },
-                            "backendPort": 80,
+                            "backendPort": 28080,
                             "enableFloatingIP": false,
                             "frontendIPConfiguration": {
                                 "id": "[variables('extFeID')]"
@@ -118,7 +118,7 @@
                             "backendAddressPool": {
                                 "id": "[variables('extBeID')]"
                             },
-                            "backendPort": 443,
+                            "backendPort": 28181,
                             "enableFloatingIP": false,
                             "frontendIPConfiguration": {
                                 "id": "[variables('extFeID')]"
@@ -138,7 +138,7 @@
                         "properties": {
                             "intervalInSeconds": 5,
                             "numberOfProbes": 3,
-                            "port": 80,
+                            "port": 28080,
                             "protocol": "Tcp"
                         }
                     },
@@ -147,7 +147,7 @@
                         "properties": {
                             "intervalInSeconds": 5,
                             "numberOfProbes": 3,
-                            "port": 443,
+                            "port": 28181,
                             "protocol": "Tcp"
                         }
                     }

@@ -43,11 +43,11 @@
                         }
                     },
                     {
-                        "name": "Allow_http",
+                        "name": "Allow_payara_admin_https",
                         "properties": {
                             "access": "Allow",
                             "destinationAddressPrefix": "*",
-                            "destinationPortRange": "80",
+                            "destinationPortRange": "4848",
                             "direction": "Inbound",
                             "priority": 1005,
                             "protocol": "Tcp",
@@ -140,32 +140,6 @@
             },
             "tags": {
                 "displayName": "Controller Virtual Machine"
-            }
-        },
-        {
-            "type": "Microsoft.Compute/virtualMachines/extensions",
-            "apiVersion": "2017-03-30",
-            "location": "[parameters('payaraCommon').location]",
-            "dependsOn": [
-                "[concat('Microsoft.Compute/virtualMachines/', parameters('payaraCommon').ctlrVmName)]"
-            ],
-            "name": "[concat(parameters('payaraCommon').ctlrVmName,'/setup-payara')]",
-            "properties": {
-                "autoUpgradeMinorVersion": true,
-                "publisher": "Microsoft.Azure.Extensions",
-                "settings": {
-                    "fileUris": [
-                        "[parameters('payaraCommon').setupScriptUri]"
-                    ]
-                },
-                "protectedSettings":{
-                    "commandToExecute": "[concat('bash ', parameters('payaraCommon').setupScriptName, ' controller ', parameters('payaraCommon').serverNamePrefix, ' ', parameters('payaraCommon').serverCount)]"
-                },
-                "type": "CustomScript",
-                "typeHandlerVersion": "2.0"
-            },
-            "tags": {
-                "displayName": "setup-payara-controller"
             }
         }
     ],
