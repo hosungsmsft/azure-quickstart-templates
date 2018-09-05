@@ -37,7 +37,7 @@ Feel free to replace the file name (`my_payara_id_rsa`) to your desired name.
 We should create an Azure resource group where we'll deploy the templates:
 
 ```
-az group create -g my_payara_rg -n <desired_azure_region>
+az group create -g my_payara_rg -l <desired_azure_region>
 ```
 
 ## Deploy templates
