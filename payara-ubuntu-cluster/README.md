@@ -17,8 +17,9 @@ The templates are hosted on Github. Check out the templates into your cloud shel
 
 ```
 git clone https://github.com/hosungsmsft/azure-quickstart-templates/
-cd azure-quickstart-templates/payara-ubuntu-cluster
+cd azure-quickstart-templates
 git checkout payara
+cd payara-ubuntu-cluster
 ```
 
 ## Create an SSH key pair
