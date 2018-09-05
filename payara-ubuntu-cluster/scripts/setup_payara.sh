@@ -17,8 +17,8 @@ function download_payara
 {
     cd $HOME_DIR
     rm -rf payara5
-    wget http://central.maven.org/maven2/fish/payara/distributions/payara/5.182/payara-5.182.zip
-    sudo -u $PAYARA_ADMIN unzip payara-5.182.zip
+    wget http://central.maven.org/maven2/fish/payara/distributions/payara/5.183/payara-5.183.zip
+    sudo -u $PAYARA_ADMIN unzip payara-5.183.zip
 }
 
 function install_ssh_private_key
