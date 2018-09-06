@@ -171,7 +171,7 @@
           "publicKeys": [
             {
               "keyData": "[parameters('sshPublicKey')]",
-              "path": "/home/notused/.ssh/authorized_keys"
+              "path": "[concat('/home/', parameters('adminUsername'), '/.ssh/authorized_keys')]"
             }
           ]
         }
