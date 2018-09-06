@@ -109,8 +109,10 @@
         "Standard_DS4",
         "Standard_DS8",
         "Standard_DS16",
-        "Standard_D1"
-      ]
+        "Standard_D1",
+        "Standard_DS2_v2"
+      ],
+      "defaultValue": "Standard_DS2_v2"
     },
     "ubuntuOSVersion": {
       "type": "string",
@@ -126,7 +128,7 @@
     },
     "templateBaseUrl": {
       "type": "string",
-      "defaultValue": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/hazelcast-vm-cluster/",
+      "defaultValue": "https://raw.githubusercontent.com/hosungsmsft/azure-quickstart-templates/hazelcast/hazelcast-vm-cluster/",
       "metadata": {
         "description": "The base URL for the bootstrap files"
       }
