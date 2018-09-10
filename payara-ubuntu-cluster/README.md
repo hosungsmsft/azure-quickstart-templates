@@ -27,10 +27,10 @@ cd payara-ubuntu-cluster
 We need an SSH key pair to configure deployed VMs for remote SSH access. Create a key pair using the following command:
 
 ```
-ssh-keygen -t rsa -N "" -f my_payara_id_rsa
+ssh-keygen -t rsa -N "" -f </path/to/my_payara_id_rsa>
 ```
 
-Feel free to replace the file name (`my_payara_id_rsa`) to your desired name.
+Feel free to replace the file name (`/path/to/my_payara_id_rsa`) to your desired name and location.
 
 ## Create a resource group
 
@@ -47,8 +47,10 @@ make sure to replace them in the command. You'll also need to provide a good pas
 parameter (you'll use this parameter to access your deployed Payara admin server).
 
 ```
-az group deployment create -g my_payara_rg --template-file azuredeploy.json --parameters sshPublicKey="$(cat my_payara_id_rsa.pub)" sshPrivateKey="$(cat my_payara_id_rsa | base64 -w 0)" payaraAdminServerPassword=<your_desired_payara_admin_password>
+az group deployment create -g my_payara_rg --template-file azuredeploy.json --parameters sshPublicKey="$(cat /path/to/my_payara_id_rsa.pub)" sshPrivateKey="$(cat /path/to/my_payara_id_rsa | base64 -w 0)" payaraAdminServerPassword=<your_desired_payara_admin_password>
 ```
+
+Remark : On MacOSX, the command `base64` doesn't need any parameters.
 
 ## Accessing the deployed resources (controller VM and Payara site)
 
