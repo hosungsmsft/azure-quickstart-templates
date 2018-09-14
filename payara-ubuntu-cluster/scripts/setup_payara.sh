@@ -49,6 +49,9 @@ EOF
     sudo -u $PAYARA_ADMIN ./asadmin start-domain production
 
     rm -f .passwordfile
+
+    # Install payara_production service in /etc/init.d so that Payara server starts up on VM reboots
+    sudo ./asadmin create-service production
 }
 
 function setup_payara_servers
@@ -65,7 +68,7 @@ function setup_payara_servers
         local node_name="${node_name_prefix}${i}"
         local server_name="PayaraServer${i}"
 
-        sudo -u $PAYARA_ADMIN ./asadmin --user admin --passwordfile .passwordfile create-node-ssh --nodehost $node_name --installdir $HOME_DIR/payara5 --nodedir $HOME_DIR/nodes --sshuser $PAYARA_ADMIN --sshkeyfile $PAYARA_ADMIN_ID_RSA_PATH --install true $server_name
+        sudo -u $PAYARA_ADMIN ./asadmin --user admin --passwordfile .passwordfile create-node-ssh --nodehost $node_name --installdir $HOME_DIR/payara5 --nodedir $HOME_DIR/payara5/glassfish/nodes --sshuser $PAYARA_ADMIN --sshkeyfile $PAYARA_ADMIN_ID_RSA_PATH --install true $server_name
     done
 
     sudo -u $PAYARA_ADMIN ./asadmin --user admin --passwordfile .passwordfile copy-config default-config cluster-config
