@@ -93,17 +93,28 @@ function setup_payara_servers
     rm .passwordfile
 }
 
-machine_type=${1}
+function setup_payara_service_on_instance
+{
+    cd $HOME_DIR/payara5/bin
+
+    sudo ./asadmin create-service --nodedir $HOME_DIR/payara5/glassfish/nodes
+}
+
+config_type=${1}
 server_name_prefix=${2}
 server_count=${3}
 payara_admin_password=${4}
 ssh_priv_key_b64=${5}
 
-install_packages    # Should be done on both controller and server
+if [ "$config_type" != "install-instance-service" ]; then
+    install_packages    # Should be done on both controller and server
+fi
 
-if [ "$machine_type" = "controller" ]; then
+if [ "$config_type" = "controller" ]; then
     download_payara
     install_ssh_private_key $ssh_priv_key_b64
     setup_payara_admin_server $payara_admin_password
     setup_payara_servers $payara_admin_password $server_name_prefix $server_count
+elif [ "$config_type" = "install-instance-service" ] ; then
+    setup_payara_service_on_instance
 fi
